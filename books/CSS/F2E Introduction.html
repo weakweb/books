@@ -48,7 +48,39 @@
   </ol>
   <p>内联样式多用于JavaScript通过DOM修改样式，而内部样式多用于对显示速度要求极高的页面，因为内部样式要比外部样式文件下载速度快很多，这样可以保证在CSS载入时即时渲染，通常各门户网站会这么做，例如<a href="www.163.com" target="_blank">网易</a>。</p>
   <h2>CSS 基础语法</h2>
+  <p>CSS 规则由两个主要的部分构成：选择器，以及一条或多条样式声明。</p>
+  <p><code>selector {property: value; property: value;...}</code></p>
+  <p>selector(选择器)用于查找要应用CSS样式的元素，而后面的花括号里则是具体的CSS样式列表，每一个以<code>property: value;</code>的形式出现，属性（property）是您希望设置的样式属性（style attribute）。每个属性有一个值，属性和值被冒号分开。每一对属性和值以分号隔开。例如：我们需要给所有的h2元素设置字体大小为28px，颜色为红色：</p>
+  <pre>
+h2 {
+  color: red;
+  font-size: 28px;
+}
+  </pre>
+  <h3>选择器介绍</h3>
+  <p>上面说过，选择器的目的是找到特定的HTML元素，选择器可以用HTML标签，ID，Class以及它们的组合，下面是一些例子：</p>
+  <ul>
+  	<li><strong>p {font-family: "sans serif"}</strong>，HTML元素标签选择器，选中所有的P元素</li>
+  	<li><strong>h1,h2,h3,h4,h5,h6 {color: green}</strong>，分组选择器，h1到h6等6个元素标签拥有相同的样式</li>
+  	<li><strong>.right {text-align: right}</strong>，类选择器，选中所有class值为right的元素</li>
+  	<li><strong>#green {color: green}</strong>，ID选择器，选中id值为green的元素</li>
+  	<li><strong>p.right div {}</strong>，组合选择器，选中拥有class值为right的所有P标签下面所有div元素</li>
+  	<li><strong>#header h2 {}</strong>，组合选择器，选中拥有id值为header元素下面所有的h2元素标签</li>
+  </ul>
+  <p>多个选择器用逗号隔开表示一组元素拥有相同的CSS样式，可以避免重复代码。选择器中间有空格表示前后两个选择器是祖先和子孙的关系，例如#header h2表示要选择#header下面所有h2元素。如果两个选择器中间没有空格则表示它们同一层次，没有上下级关系，比如<code>p.right</code>，表示要查找拥有class值为right的P元素。</p>
+  <p>详细的CSS选择器用法请参考<a href="http://blog.csdn.net/borishuai/article/details/8636377" target="_blank">http://blog.csdn.net/borishuai/article/details/8636377</a></p>
   <h2>ID和Class</h2>
+  <p>ID和Class两个属性经常用于CSS选择器中，好多初学者分不清楚什么时候用ID，什么时候用Class。下面是它们的特性：</p>
+  <ol>
+  	<li>ID，顾名思义就是identity，也就是身份证的意思，所以ID在一个页面里是不能有重复的。其实，对于CSS来讲，真的有重复的ID也能正常工作的，即选择器能够找到所有重复的ID，但是JavaScript却无法正常工作，例如：document.getElementById()方法找到第一个ID就不会往下找了。</li>
+  	<li>Class，顾名思义就是classification，也就是分类的意思，即一个Class即代表某种分类，例如：.error，所有的错误消息都加上这个Class。这就说明Class是可以重复的。</li>
+  	<li>一个元素至多拥有一个ID，就像人只能拥有一个身份证号码一样。</li>
+  	<li>一个元素可能拥有多个不同的Class，因为一个Class代表一个分类或类别，那么一个元素就可能属于多个分类。就像人可能同时喜欢篮球、足球、乒乓球。例如：<code>&lt;div class=&quot;basketball football ping-pong&quot;&gt;&lt;/div&gt;</code>，多个Class用空格隔开。</li>
+  </ol>
+  <p>通过以上的特征来看，当需要为某个特定的HTML元素应用样式时，可以选择使用ID，而当为一组拥有相同特征的元素应有样式时，则应该使用Class。</p>
+  <p>分组选择器(h1, h2, h3)和Class选择器行为上有点相似，即一次可以选中多个元素，但是语义上是完全不同的。分组选择器表示多个元素在某个时间点上拥有相同的样式，过会可能就不相同了，但是Class表示多个元素拥有相同的分类或者相同的属性。样式是为分类或属性服务的。</p>
+  <h2>优先级</h2>
+  <h2>继承</h2>
   <script type="text/javascript" src="../js/jquery.min.js"></script> 
 </body>
 </html>
