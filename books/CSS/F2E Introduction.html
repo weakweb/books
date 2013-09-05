@@ -61,7 +61,7 @@ h2 {
   <p>上面说过，选择器的目的是找到特定的HTML元素，选择器可以用HTML标签，ID，Class以及它们的组合，下面是一些例子：</p>
   <ul>
   	<li><strong>p {font-family: "sans serif"}</strong>，HTML元素标签选择器，选中所有的P元素</li>
-  	<li><strong>h1,h2,h3,h4,h5,h6 {color: green}</strong>，分组选择器，h1到h6等6个元素标签拥有相同的样式</li>
+  	<li><strong>h1,h2,h3,h4,h5,h6 {color: green}</strong>，分组选择器，h1到h6等6个元素标签拥有相同的样式，它们其实是6条规则合并在一起。</li>
   	<li><strong>.right {text-align: right}</strong>，类选择器，选中所有class值为right的元素</li>
   	<li><strong>#green {color: green}</strong>，ID选择器，选中id值为green的元素</li>
   	<li><strong>p.right div {}</strong>，组合选择器，选中拥有class值为right的所有P标签下面所有div元素</li>
@@ -80,7 +80,75 @@ h2 {
   <p>通过以上的特征来看，当需要为某个特定的HTML元素应用样式时，可以选择使用ID，而当为一组拥有相同特征的元素应有样式时，则应该使用Class。</p>
   <p>分组选择器(h1, h2, h3)和Class选择器行为上有点相似，即一次可以选中多个元素，但是语义上是完全不同的。分组选择器表示多个元素在某个时间点上拥有相同的样式，过会可能就不相同了，但是Class表示多个元素拥有相同的分类或者相同的属性。样式是为分类或属性服务的。</p>
   <h2>优先级</h2>
+  <p>CSS选择器的写法多种多样，意味着很有可能有多个选择器会查找到同一个元素，如：<code>p {color: red;}, div p {color: green;}</code>，CSS采用层叠(cascade)的方式来处理冲突，即为每一条规则分配一个优先级(权重)，优先级高的规则优先于优先级低的规则，如果优先级相同，则后定义的规则优先，也就是后面的规则会覆盖前面的规则。</p>
+  <p>CSS优先级的计算方法如下：</p>
+  <ul>
+  	<li>行内样式的优先级为1000</li>
+  	<li>一个ID选择器的优先级为100</li>
+  	<li>一个Class选择器的优先级为10</li>
+  	<li>一个HTML标签和伪类选择器的优先级为1</li>
+  </ul>
+  <p>接下来就是数一数一个规则里的优先级之和，下面是一些例子：</p>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+      	<th>选择器</th>
+      	<th>优先级</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+      	<td>style=""</td>
+      	<td>1000</td>
+      </tr>
+      <tr>
+      	<td>p</td>
+      	<td>1</td>
+      </tr>
+      <tr>
+      	<td>h1, h2, h3, h4, h5, h6</td>
+      	<td>1(6个选择器的优先级都为1)</td>
+      </tr>
+      <tr>
+      	<td>.ball</td>
+      	<td>10</td>
+      </tr>
+      <tr>
+      	<td>#header</td>
+      	<td>100</td>
+      </tr>
+      <tr>
+      	<td>.ball p</td>
+      	<td>11(10 + 1)</td>
+      </tr>
+      <tr>
+      	<td>#header .ball div</td>
+      	<td>111(100 + 10 + 1)</td>
+      </tr>
+      <tr>
+      	<td>.container #header #login a</td>
+      	<td>211(10 + 100 * 2 + 1)</td>
+      </tr>
+      <tr>
+      	<td>div.container .ball div</td>
+      	<td>22(1 * 2 + 10 * 2)</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>所以选择器的优先级计算很简单，只要数一数选择器中有几个ID，Class，HTML标签，几个伪类，然后乘以它们各自的权重，它们的总和就是规则的优先级了。但是对于组合选择器(如"h1, h2")，它们的每一个优先级是单独计算的，彼此之间是没有关系的。例如：<code>h1, .ball {}</code>，它们的优先级分别是1和10。</p>
   <h2>继承</h2>
+  <p>CSS的许多属性是可以继承的，例如color, font等，应用了这些属性的元素的后代元素也会拥有这些属性。例如我们通常在body标签上设置字体大小，这样所有的元素就都有font-size属性了。</p>
+  <p>通过继承，我们节约许多代码。对于一个网站来说，绝大部分内容的字体家族、大小、颜色都是相同，完全没有必要在每个地方都写一遍，只要在body上面定义一次就可以了。</p>
+  <pre>
+body {
+  color: #000;
+  font: normal 12px/24px Helvetica, Tahoma, Arial, sans-serif;
+}
+  </pre>
+  <p>这样维护起来也比较方便，只要改一行代码，整个网站的效果都改了。如果某个元素的字体颜色比较特殊，则可以在该元素上添加颜色属性来覆盖继承来的颜色就可以了。</p>
+  <p>上面的例子是全局继承的，也可以在部分模块中使用继承，例如#header里面的字体大小是16px，则我们可以使用<code>#header {font-size: 16px}</code>，这样#header下面的所有元素就都继承了16px的字体大小。</p>
+  <p>继承过来的属性的优先级为0，就是说直接应用于元素的样式总能覆盖继承过来的样式。</p>
+  <p>大部分的CSS属性是不可以继承的，具体哪些属性可以继承可以去<a href="http://www.w3school.com.cn/css/index.asp" target="_blank">W3cshool</a>查询。</p>
   <script type="text/javascript" src="../js/jquery.min.js"></script> 
 </body>
 </html>
